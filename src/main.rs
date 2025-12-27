@@ -93,8 +93,16 @@ impl ApplicationHandler for App {
 
                     canvas.clear(0x000000);
                     canvas.draw_rect(20, 20, 32, 32, 0x00FF00FF);
-                    canvas.draw_rect(128, 64, 64, 64, 0x00664499);
+                    canvas.draw_rect(128, 64, 64, 32, 0x00664499);
                     canvas.draw_rect_outline(128, 64, 64, 64, 0x00AA55FF);
+                    canvas.draw_rect_outline(200, 200, 200, 0, 0x00FFAAAA);
+                    canvas.draw_rect_outline(200, 210, 200, 1, 0x00AAFFAA);
+                    canvas.draw_rect_outline(200, 220, 200, 2, 0x00AAAAFF);
+                    canvas.draw_rect_with_transparency(8, (height.max(32) - 32) as usize, (width.max(16) - 16) as usize, 24, 0x7799DDFF);
+                    canvas.draw_rect_outline(8, (height.max(32) - 32) as usize, (width.max(16) - 16) as usize, 24, 0x0099DDFF);
+
+                    canvas.draw_rect(300, 64, 64, 64, 0xFF0000);
+                    canvas.draw_rect_with_transparency(332, 96, 64, 64, 0x8800FF00);
 
                     if let Err(e) = buffer.present() {
                         println!("Error presenting buffer: {:?}", e);
