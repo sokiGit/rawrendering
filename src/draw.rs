@@ -1,3 +1,7 @@
+use crate::draw::polygon::Polygon;
+
+pub mod polygon;
+
 pub struct Canvas<'a> {
     pub pixels: &'a mut [u32],
     pub width: usize,
@@ -75,6 +79,50 @@ impl<'a> Canvas<'a> {
                 let fin_color = fin_r << 16 | fin_g << 8 | fin_b;
 
                 self.put_pixel(x_px, y_px, fin_color);
+            }
+        }
+    }
+
+    pub fn draw_line(&mut self, x1: usize, y1: usize, x2: usize, y2: usize, color: u32) {
+        // I hate the type conversions, but I'm happy I figured it out on my own, TODO: Fix
+        let x1 = x1 as isize;
+        let y1 = y1 as isize;
+
+        let x2 = x2 as isize;
+        let y2 = y2 as isize;
+
+        let dist_x = x1 - x2;
+        let dist_y = y1 - y2;
+        let sample_points = (dist_x * dist_x + dist_y * dist_y).isqrt() as f32;
+
+        let delta_x = (x2 - x1) as f32 / sample_points;
+        let delta_y = (y2 - y1) as f32 / sample_points;
+
+        let mut i = 0f32;
+        loop {
+            self.put_pixel(
+                (x1 + (delta_x * i) as isize) as usize,
+                (y1 + (delta_y * i) as isize) as usize,
+                color
+            );
+            if i == sample_points { break; }
+            i += 1f32;
+        }
+    }
+
+    pub fn draw_polygon_outline(&mut self, polygon: Polygon<'a>) {
+        let path_len = polygon.path.len();
+        if path_len < 2 { return; }
+
+        for i in 0..path_len {
+            if i < path_len - 1 {
+                let (x1, y1) = polygon.path[i];
+                let (x2, y2) = polygon.path[i + 1];
+                self.draw_line(x1, y1, x2, y2, polygon.color);
+            } else if polygon.closed {
+                let (x1, y1) = polygon.path[i];
+                let (x2, y2) = polygon.path[0];
+                self.draw_line(x1, y1, x2, y2, polygon.color);
             }
         }
     }

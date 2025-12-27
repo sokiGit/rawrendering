@@ -8,6 +8,7 @@ use winit::event::WindowEvent;
 use winit::event_loop::{ActiveEventLoop, ControlFlow, EventLoop};
 use winit::window::{Window, WindowId};
 use crate::draw::Canvas;
+use crate::draw::polygon::Polygon;
 
 mod draw;
 
@@ -20,7 +21,7 @@ struct App {
 
 impl ApplicationHandler for App {
     fn resumed(&mut self, event_loop: &ActiveEventLoop) {
-        let window_attributes = Window::default_attributes().with_title("SoftBuffer Rendering Test");
+        let window_attributes = Window::default_attributes().with_title("Softbuffer Rendering Test");
 
         let raw_window = match event_loop.create_window(window_attributes) {
             Ok(raw_window) => raw_window,
@@ -104,6 +105,58 @@ impl ApplicationHandler for App {
 
                     canvas.draw_rect(300, 64, 64, 64, 0xFF0000);
                     canvas.draw_rect_with_transparency(332, 96, 64, 64, 0x8800FF00);
+
+                    canvas.draw_line(30, 30, 60, 90, 0x00FFFFFF);
+                    canvas.draw_line(0, height as usize, width as usize, 0, 0x00AAAAAA);
+
+                    canvas.draw_polygon_outline(
+                        Polygon {
+                            path: &[
+                                (100, 100),
+                                (200, 100),
+                                (220, 90),
+                                (300, 300),
+                                (450, 320),
+                                (200, 350),
+                            ],
+                            color: 0x00FFAAAA,
+                            closed: true,
+                        }
+                    );
+
+                    canvas.draw_polygon_outline(
+                        Polygon {
+                            path: &[
+                                (350, 350),
+                                (375, 450),
+                                (375, 500),
+                                (400, 500),
+                                (500, 400),
+                            ],
+                            color: 0x0000FFAA,
+                            closed: false,
+                        }
+                    );
+
+                    // <3
+                    canvas.draw_polygon_outline(
+                        Polygon {
+                            path: &[
+                                (200, 200),
+                                (300, 200),
+                                (400, 300),
+                                (500, 200),
+                                (600, 200),
+                                (700, 300),
+                                (700, 500),
+                                (400, 800),
+                                (100, 500),
+                                (100, 300),
+                            ],
+                            color: 0x00FF0000,
+                            closed: true,
+                        }
+                    );
 
                     if let Err(e) = buffer.present() {
                         println!("Error presenting buffer: {:?}", e);
