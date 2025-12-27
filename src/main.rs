@@ -1,7 +1,7 @@
-use std::num::{NonZero, NonZeroU32};
+use std::num::{NonZeroU32};
 use std::process::exit;
 use std::rc::Rc;
-use softbuffer::{Context, SoftBufferError, Surface};
+use softbuffer::{Context, Surface};
 use winit;
 use winit::application::ApplicationHandler;
 use winit::event::WindowEvent;
@@ -53,7 +53,7 @@ impl ApplicationHandler for App {
         self.surface = Some(surface);
     }
 
-    fn window_event(&mut self, event_loop: &ActiveEventLoop, window_id: WindowId, event: WindowEvent) {
+    fn window_event(&mut self, event_loop: &ActiveEventLoop, _window_id: WindowId, event: WindowEvent) {
         match event {
             WindowEvent::CloseRequested => {
                 event_loop.exit();
