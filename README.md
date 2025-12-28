@@ -29,3 +29,4 @@ with no or minimal tampering with the code.
 - [ ] Relative units (%, maybe something like vw/vh and parent-relative % if I implement the necessary underlying 
 architecture)
 - [ ] 3D object rendering (very basic, no gpu acceleration)
+- [ ] Fix color transparent mixing, make it work blend regardless of method used
