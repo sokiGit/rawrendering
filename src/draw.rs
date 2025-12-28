@@ -27,39 +27,63 @@ impl<'a> Canvas<'a> {
         self.pixels.fill(color);
     }
 
-    pub fn draw_rect(&mut self, x: usize, y: usize, w: usize, h: usize, color: u32) {
-        for x_px in x..x + w {
-            for y_px in y..y+ h {
+    pub fn draw_rect(&mut self, x1: usize, y1: usize, x2: usize, y2: usize, color: u32) {
+        let from_x = x1.min(x2);
+        let from_y = y1.min(y2);
+
+        let to_x = x1.max(x2);
+        let to_y = y1.max(y2);
+
+        for x_px in x1..x2 {
+            for y_px in y1..y2 {
                 self.put_pixel(x_px, y_px, color);
             }
         }
     }
 
-    pub fn draw_rect_outline(&mut self, x: usize, y: usize, w: usize, h: usize, color: u32) {
-        if w > 0 {
-            for x_px in x..x +w {
-                //NOTE: Puts pixels even if h == 0, this results in h = 1 and h = 0 looking the same
-                self.put_pixel(x_px, y, color);
-                if h > 0 {
-                    self.put_pixel(x_px, y + h - 1, color);
+    pub fn draw_rect_outline(&mut self, x1: usize, y1: usize, x2: usize, y2: usize, color: u32) {
+        let from_x = x1.min(x2);
+        let from_y = y1.min(y2);
+
+        let to_x = x1.max(x2);
+        let to_y = y1.max(y2);
+
+        if x1 != x2 {
+            // Place horizontal lines ==
+            for x_px in from_x..to_x {
+                // Upper line
+                self.put_pixel(x_px, from_y, color);
+
+                // Lower line
+                if y1 != y2 {
+                    self.put_pixel(x_px, to_y.max(1) - 1, color);
                 }
             }
         }
 
-        if h > 0 {
-            for y_px in y..y +h {
-                //NOTE: Puts pixels even if w == 0, this results in w = 1 and w = 0 looking the same
-                self.put_pixel(x, y_px, color);
-                if w > 0 {
-                    self.put_pixel(x + w - 1, y_px, color);
+        if y1 != y2 {
+            // Place vertical lines ||
+            for y_px in from_y..to_y {
+                // Left line
+                self.put_pixel(from_x, y_px, color);
+
+                // Right line
+                if x1 != x2 {
+                    self.put_pixel(to_x.max(1) - 1, y_px, color);
                 }
             }
         }
     }
 
-    pub fn draw_rect_with_transparency(&mut self, x: usize, y: usize, w: usize, h: usize, color: u32) {
-        for x_px in x..x + w {
-            for y_px in y..y + h {
+    pub fn draw_rect_with_transparency(&mut self, x1: usize, y1: usize, x2: usize, y2: usize, color: u32) {
+        let from_x = x1.min(x2);
+        let from_y = y1.min(y2);
+
+        let to_x = x1.max(x2);
+        let to_y = y1.max(y2);
+
+        for x_px in from_x..to_x {
+            for y_px in from_y..to_y {
                 let old_color = self.get_pixel(x_px, y_px);
                 let old_r = (old_color >> 16) & 0xFF;   // 0xFF0000 -> 0x0000FF (4 hex sh = 16 bin sh), requires mask
                 let old_g = (old_color >> 8) & 0xFF;    // 0x00FF00 -> 0x0000FF (2 hex sh = 8 bin sh), requires mask
@@ -83,29 +107,28 @@ impl<'a> Canvas<'a> {
         }
     }
 
-    pub fn draw_line(&mut self, x1: usize, y1: usize, x2: usize, y2: usize, color: u32) {
-        // I hate the type conversions, but I'm happy I figured it out on my own, TODO: Fix
-        let x1 = x1 as isize;
-        let y1 = y1 as isize;
+    pub fn draw_line(&mut self, x1: isize, y1: isize, x2: isize, y2: isize, color: u32) {
+        let x1 = x1 as f32;
+        let y1 = y1 as f32;
 
-        let x2 = x2 as isize;
-        let y2 = y2 as isize;
+        let x2 = x2 as f32;
+        let y2 = y2 as f32;
 
         let dist_x = x1 - x2;
         let dist_y = y1 - y2;
-        let sample_points = (dist_x * dist_x + dist_y * dist_y).isqrt() as f32;
+        let sample_points = (dist_x * dist_x + dist_y * dist_y).sqrt();
 
-        let delta_x = (x2 - x1) as f32 / sample_points;
-        let delta_y = (y2 - y1) as f32 / sample_points;
+        let delta_x = (x2 - x1) / sample_points;
+        let delta_y = (y2 - y1) / sample_points;
 
         let mut i = 0f32;
         loop {
             self.put_pixel(
-                (x1 + (delta_x * i) as isize) as usize,
-                (y1 + (delta_y * i) as isize) as usize,
+                (x1 + delta_x * i) as usize,
+                (y1 + delta_y * i) as usize,
                 color
             );
-            if i == sample_points { break; }
+            if i >= sample_points { break; }
             i += 1f32;
         }
     }
@@ -124,6 +147,74 @@ impl<'a> Canvas<'a> {
                 let (x2, y2) = polygon.path[0];
                 self.draw_line(x1, y1, x2, y2, polygon.color);
             }
+        }
+    }
+
+    pub fn draw_cubic_bezier_curve_outline(&mut self, x1: isize, y1: isize, x1_c: isize, y1_c: isize, x2: isize, y2: isize, x2_c: isize, y2_c: isize, color: u32) {
+        // x1, y1 = Start of curve
+        // x1_c, y2_c = First 'Control Point', for (x1, y1), sets curvature at start of curve
+        // x2, y2 = End of curve
+        // x2_c, y2_c = Last 'Control Point', for (x2, y2), sets curvature at end of curve
+
+        let x1 = x1 as f32;
+        let y1 = y1 as f32;
+        let x1_c = x1_c as f32;
+        let y1_c = y1_c as f32;
+        let x2 = x2 as f32;
+        let y2 = y2 as f32;
+        let x2_c = x2_c as f32;
+        let y2_c = y2_c as f32;
+
+        // This makes the lines more full and ensures that even the most extreme curves don't have gaps.
+        // Multiplying it by 2x can lead to improvements, 4x as well but the returns diminish quickly
+        let sample_points =(
+            ((x1-x1_c)*(x1-x1_c) + (y1-y1_c)*(y1-y1_c)).sqrt() +
+            ((x1_c-x2_c)*(x1_c-x2_c) + (y1_c-y2_c)*(y1_c-y2_c)).sqrt() +
+            ((x2_c-x2)*(x2_c-x2) + (y2_c-y2)*(y2_c-y2)).sqrt()) * 4f32;
+
+        println!("sample points: {}", sample_points);
+        println!("old sample pt: {}", (x1*x2 + y1*y2).sqrt());
+
+        // Constants, do not re-calculate
+        let delta_inter_1_x = (x1_c - x1) / sample_points;
+        let delta_inter_1_y = (y1_c - y1) / sample_points;
+
+        let delta_inter_2_x = (x2 - x2_c) / sample_points;
+        let delta_inter_2_y = (y2 - y2_c) / sample_points;
+
+        let mut i = 0f32;
+        loop {
+            // Figure out position of pixel
+
+            // Interpolate between: (x1, y1) -> (x1_c, y1_c), call that inter_1
+            // Interpolate between: (x1_c, y1_c) -> (x2_c, y2_c); call that bridge
+            // Interpolate between: (x2_c, y2_c) -> (x2, y2), call that inter_2
+            // Interpolate between: inter_1 -> bridge, call that b_1
+            // Interpolate between: bridge -> inter_2, call that b_2
+            // Interpolate between: b_1 -> b_2, that is (x_px, y_px)
+
+            let inter_1_x = x1 + delta_inter_1_x * i;
+            let inter_1_y = y1 + delta_inter_1_y * i;
+
+            let bridge_x = x1_c + (x2_c - x1_c) * i / sample_points;
+            let bridge_y = y1_c + (y2_c - y1_c) * i / sample_points;
+
+            let inter_2_x = x2_c + delta_inter_2_x * i;
+            let inter_2_y = y2_c + delta_inter_2_y * i;
+
+            let b_1_x = inter_1_x + (bridge_x - inter_1_x) * i / sample_points;
+            let b_1_y = inter_1_y + (bridge_y - inter_1_y) * i / sample_points;
+
+            let b_2_x = bridge_x + (inter_2_x - bridge_x) * i / sample_points;
+            let b_2_y = bridge_y + (inter_2_y - bridge_y) * i / sample_points;
+
+            let x_px = (b_1_x + (b_2_x - b_1_x) * i / sample_points) as usize;
+            let y_px = (b_1_y + (b_2_y - b_1_y) * i / sample_points) as usize;
+
+            self.put_pixel(x_px, y_px, color);
+
+            if i >= sample_points { break; }
+            i += 1f32;
         }
     }
 }

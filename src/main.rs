@@ -94,20 +94,21 @@ impl ApplicationHandler for App {
                     };
 
                     canvas.clear(0x000000);
-                    canvas.draw_rect(20, 20, 32, 32, 0x00FF00FF);
-                    canvas.draw_rect(128, 64, 64, 32, 0x00664499);
-                    canvas.draw_rect_outline(128, 64, 64, 64, 0x00AA55FF);
-                    canvas.draw_rect_outline(200, 200, 200, 0, 0x00FFAAAA);
-                    canvas.draw_rect_outline(200, 210, 200, 1, 0x00AAFFAA);
-                    canvas.draw_rect_outline(200, 220, 200, 2, 0x00AAAAFF);
-                    canvas.draw_rect_with_transparency(8, (height.max(32) - 32) as usize, (width.max(16) - 16) as usize, 24, 0x7799DDFF);
-                    canvas.draw_rect_outline(8, (height.max(32) - 32) as usize, (width.max(16) - 16) as usize, 24, 0x0099DDFF);
 
-                    canvas.draw_rect(300, 64, 64, 64, 0xFF0000);
-                    canvas.draw_rect_with_transparency(332, 96, 64, 64, 0x8800FF00);
+                    canvas.draw_rect(20, 20, 52, 52, 0x00FF00FF);
+                    canvas.draw_rect(128, 64, 192, 96, 0x00664499);
+                    canvas.draw_rect_outline(128, 64, 192, 128, 0x00AA55FF);
+                    canvas.draw_rect_outline(200, 200, 400, 200, 0x00FFAAAA);
+                    canvas.draw_rect_outline(200, 210, 400, 211, 0x00AAFFAA);
+                    canvas.draw_rect_outline(200, 220, 400, 222, 0x00AAAAFF);
+                    canvas.draw_rect_with_transparency(8, (height.max(32) - 32) as usize, (width.max(8) - 8) as usize, (height.max(8) - 8) as usize, 0x7799DDFF);
+                    canvas.draw_rect_outline(8, (height.max(32) - 32) as usize, (width.max(8) - 8) as usize, (height.max(8) - 8) as usize, 0x0099DDFF);
+
+                    canvas.draw_rect(300, 64, 364, 128, 0xFF0000);
+                    canvas.draw_rect_with_transparency(332, 96, 396, 160, 0x8800FF00);
 
                     canvas.draw_line(30, 30, 60, 90, 0x00FFFFFF);
-                    canvas.draw_line(0, height as usize, width as usize, 0, 0x00AAAAAA);
+                    canvas.draw_line(0, height as isize, width as isize, 0, 0x00AAAAAA);
 
                     canvas.draw_polygon_outline(
                         Polygon {
@@ -156,6 +157,37 @@ impl ApplicationHandler for App {
                             color: 0x00FF0000,
                             closed: true,
                         }
+                    );
+
+
+                    canvas.draw_rect_outline(200, 200, 400, 400, 0x00888888);
+                    canvas.draw_line(200, 200, 300,  200, 0x00FF8888);
+                    canvas.draw_line(300, 400, 400, 400, 0x008888FF);
+
+
+                    // Bezier curves
+                    canvas.draw_cubic_bezier_curve_outline(
+                        200, 200,
+                        300, 200,
+                        400, 400,
+                        300, 400,
+                        0x00FF44AA
+                    );
+
+                    canvas.draw_cubic_bezier_curve_outline(
+                        200, 200,
+                        200, 100,
+                        400, 400,
+                        400, 500,
+                        0x00AA44FF
+                    );
+
+                    canvas.draw_cubic_bezier_curve_outline(
+                        200, 200,
+                        700, 200,
+                        400, 400,
+                        400, -100,
+                        0x00AAFF44
                     );
 
                     if let Err(e) = buffer.present() {
