@@ -35,30 +35,21 @@ impl Shape2D for Rect {
             }
         }
 
-        // Repeat for outline (if present)
+        // Draw outline (if present)
         if !is_outline_transparent {
-            // Uhm ... efficiency? :3c
-            if self.height > 1 {
-                for i in 0..self.width {
-                    graphics_2d._set_pixel(i, 0, self.outline_color, &self.base);
-                    graphics_2d._set_pixel(i, self.height - 1, self.outline_color, &self.base);
-                }
-            } else {
-                for i in 0..self.width {
-                    graphics_2d._set_pixel(i, 0, self.outline_color, &self.base);
-                }
-            }
+            let width = self.width - 1;
+            let height = self.height - 1;
 
-            if self.width > 1 {
-                for i in 0..self.height {
-                    graphics_2d._set_pixel(0, i, self.outline_color, &self.base);
-                    graphics_2d._set_pixel(self.width - 1, i, self.outline_color, &self.base);
-                }
+            // top and bottom
+            for x in 0..self.width {
+                graphics_2d._set_pixel(x, 0, self.outline_color, &self.base);
+                graphics_2d._set_pixel(x, height, self.outline_color, &self.base);
             }
-            else {
-                for i in 0..self.height {
-                    graphics_2d._set_pixel(0, i, self.outline_color, &self.base);
-                }
+            
+            // left and right
+            for y in 0..self.height {
+                graphics_2d._set_pixel(0, y, self.outline_color, &self.base);
+                graphics_2d._set_pixel(width, y, self.outline_color, &self.base);
             }
         }
     }
