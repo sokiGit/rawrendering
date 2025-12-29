@@ -3,6 +3,10 @@
 This project was created for me to learn how rendering pixels on-screen works, how it can be done 'universally', and how
 stuff like drawing lines, circles, curves, etc. works.
 
+## (Kinda Simplified) Preview diagram
+
+<img src="./public/rawrendering_diagram_v1.png" alt='"Flow" Diagram'>
+
 ## Project aim
 
 While this project primarily focuses on teaching ME (and anyone who wants to take a look) how rendering works, I also
@@ -32,3 +36,4 @@ architecture)
 - [ ] Re-structure modules - everything does one thing
 - [ ] Fix color transparent mixing, make it work blend regardless of method used
 - [ ] Gradient object fills and outlines
+- [ ] Maybe grouping objects together? To control transparency of all of them at once? :3 
