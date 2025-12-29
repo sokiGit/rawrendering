@@ -1,7 +1,6 @@
 use crate::canvas::Canvas;
 use crate::object_2d::Object2D;
 use crate::shape_2d::Shape2D;
-use crate::utils::vec2::Vec2;
 
 pub(crate) struct Graphics2D<'a> {
     pub(crate) canvas: &'a mut Option<Canvas<'a>>,

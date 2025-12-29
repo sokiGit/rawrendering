@@ -1,4 +1,3 @@
-
 #[derive(Default)]
 pub(crate) struct Vec2<T> {
     pub(crate) x: T,
