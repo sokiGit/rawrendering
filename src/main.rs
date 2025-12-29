@@ -7,10 +7,18 @@ use winit::application::ApplicationHandler;
 use winit::event::WindowEvent;
 use winit::event_loop::{ActiveEventLoop, ControlFlow, EventLoop};
 use winit::window::{Window, WindowId};
-use crate::draw::Canvas;
-use crate::draw::polygon::Polygon;
+use crate::canvas::Canvas;
+use crate::canvas::polygon::Polygon;
+use crate::graphics_2d::Graphics2D;
+use crate::object_2d::Object2D;
+use crate::shape_2d::rect::Rect;
+use crate::utils::vec2::Vec2;
 
-mod draw;
+mod canvas;
+mod graphics_2d;
+mod object_2d;
+mod utils;
+mod shape_2d;
 
 #[derive(Default)]
 struct App {
@@ -204,6 +212,52 @@ impl ApplicationHandler for App {
                             ],
                             color: 0x0055AAAA,
                             closed: true,
+                        }
+                    );
+
+                    let mut graphics = Graphics2D {
+                        canvas: &mut Some(canvas),
+                    };
+
+                    graphics.draw_shape(
+                        &Rect {
+                            base: Object2D {
+                                offset: Vec2::new(12, 24),
+                                ..Object2D::default()
+                            },
+                            height: 64,
+                            width: 64,
+                            fill_color: 0x0000FF00,
+                            outline_color: 0x00FF00FF,
+                            ..Rect::default()
+                        }
+                    );
+
+                    graphics.draw_shape(
+                        &Rect {
+                            base: Object2D {
+                                offset: Vec2::new(12, 24),
+                                ..Object2D::default()
+                            },
+                            height: 64,
+                            width: 64,
+                            fill_color: 0x00000000,
+                            outline_color: 0xFF000000,
+                            ..Rect::default()
+                        }
+                    );
+
+                    graphics.draw_shape(
+                        &Rect {
+                            base: Object2D {
+                                relative_offset: Vec2::new(0.5, 0.5),
+                                anchor: Vec2::new(16, 16),
+                                ..Object2D::default()
+                            },
+                            width: 32,
+                            height: 32,
+                            fill_color: 0x00AA2266,
+                            outline_color: 0xFF000000,
                         }
                     );
 

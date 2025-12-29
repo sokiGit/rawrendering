@@ -1,4 +1,4 @@
-use crate::draw::polygon::Polygon;
+use crate::canvas::polygon::Polygon;
 use std::f32::consts::PI;
 
 // TODO: Fix mess with using isize/usize/f32 as params
@@ -15,7 +15,7 @@ pub struct Canvas<'a> {
 }
 
 impl<'a> Canvas<'a> {
-    pub fn put_pixel(&mut self, x: usize, y: usize, color: u32) {
+    pub fn set_pixel(&mut self, x: usize, y: usize, color: u32) {
         if x < self.width && y < self.height {
             self.pixels[y * self.width + x] = color;
         }
@@ -36,7 +36,7 @@ impl<'a> Canvas<'a> {
     pub fn draw_rect(&mut self, x1: usize, y1: usize, x2: usize, y2: usize, color: u32) {
         for x_px in x1..x2 {
             for y_px in y1..y2 {
-                self.put_pixel(x_px, y_px, color);
+                self.set_pixel(x_px, y_px, color);
             }
         }
     }
@@ -52,11 +52,11 @@ impl<'a> Canvas<'a> {
             // Place horizontal lines ==
             for x_px in from_x..to_x {
                 // Upper line
-                self.put_pixel(x_px, from_y, color);
+                self.set_pixel(x_px, from_y, color);
 
                 // Lower line
                 if y1 != y2 {
-                    self.put_pixel(x_px, to_y.max(1) - 1, color);
+                    self.set_pixel(x_px, to_y.max(1) - 1, color);
                 }
             }
         }
@@ -65,11 +65,11 @@ impl<'a> Canvas<'a> {
             // Place vertical lines ||
             for y_px in from_y..to_y {
                 // Left line
-                self.put_pixel(from_x, y_px, color);
+                self.set_pixel(from_x, y_px, color);
 
                 // Right line
                 if x1 != x2 {
-                    self.put_pixel(to_x.max(1) - 1, y_px, color);
+                    self.set_pixel(to_x.max(1) - 1, y_px, color);
                 }
             }
         }
@@ -109,7 +109,7 @@ impl<'a> Canvas<'a> {
 
                 let fin_color = fin_r << 16 | fin_g << 8 | fin_b;
 
-                self.put_pixel(x_px, y_px, fin_color);
+                self.set_pixel(x_px, y_px, fin_color);
             }
         }
     }
@@ -130,7 +130,7 @@ impl<'a> Canvas<'a> {
 
         let mut i = 0f32;
         loop {
-            self.put_pixel(
+            self.set_pixel(
                 (x1 + delta_x * i) as usize,
                 (y1 + delta_y * i) as usize,
                 color,
@@ -230,7 +230,7 @@ impl<'a> Canvas<'a> {
             let x_px = (b_1_x + (b_2_x - b_1_x) * i / sample_points) as usize;
             let y_px = (b_1_y + (b_2_y - b_1_y) * i / sample_points) as usize;
 
-            self.put_pixel(x_px, y_px, color);
+            self.set_pixel(x_px, y_px, color);
 
             if i >= sample_points {
                 break;
@@ -243,7 +243,7 @@ impl<'a> Canvas<'a> {
         for x in -(r as isize)..r as isize {
             for y in -(r as isize)..r as isize {
                 if x * x + y * y <= (r * r) as isize {
-                    self.put_pixel(
+                    self.set_pixel(
                         (mid_x as isize + x) as usize,
                         (mid_y as isize + y) as usize,
                         color,
@@ -264,7 +264,7 @@ impl<'a> Canvas<'a> {
             let px_y = (i.sin() * r_f32) + mid_y as f32;
 
             if px_x >= 0f32 && px_y >= 0f32 {
-                self.put_pixel(px_x as usize, px_y as usize, color);
+                self.set_pixel(px_x as usize, px_y as usize, color);
             }
 
 
