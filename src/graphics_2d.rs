@@ -1,6 +1,7 @@
 use crate::canvas::Canvas;
 use crate::object_2d::Object2D;
 use crate::shape_2d::Shape2D;
+use crate::utils::color::Color;
 
 pub(crate) struct Graphics2D<'a> {
     pub(crate) canvas: &'a mut Canvas<'a>,
@@ -11,7 +12,7 @@ impl Graphics2D<'_> {
         shape_2d.draw(self);
     }
 
-    pub(crate) fn _set_pixel(&mut self, x: usize, y: usize, color: u32, object_2d: &Object2D)
+    pub(crate) fn _set_pixel(&mut self, x: usize, y: usize, color: &Color, object_2d: &Object2D)
     {
             //TODO: Fix type conversion hell
             //TODO: Relative anchor (needs a way to get object bounds, eg. Shape2D.bounds_size: Vec2<usize>)

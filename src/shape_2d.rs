@@ -1,5 +1,4 @@
 use crate::graphics_2d::Graphics2D;
-use crate::object_2d::Object2D;
 
 // Export Shapes
 pub(crate) mod rect;

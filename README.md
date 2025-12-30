@@ -19,7 +19,7 @@ with no or minimal tampering with the code.
 This example showcases the program's current abilities on the current commit.
 
 That includes:
-- Vector paths that use both straight lines and cubic bezier curves
+- Vector paths that use both straight lines and cubic Bézier curves
 - Circles (w/ outlines)
 - Rectangles (w/ outlines)
 - Absolute and relative positioning and anchor usage

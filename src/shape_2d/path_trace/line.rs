@@ -1,13 +1,13 @@
 use crate::graphics_2d::Graphics2D;
 use crate::object_2d::Object2D;
 use crate::shape_2d::path_trace::PathTrace;
-use crate::shape_2d::vector_path::VectorPath2D;
+use crate::utils::color::Color;
 use crate::utils::vec2::Vec2;
 
 pub(crate) struct Line2D {
     pub(crate) from: Vec2<isize>,
     pub(crate) to: Vec2<isize>,
-    pub(crate) color: u32,
+    pub(crate) color: Color,
 }
 
 impl PathTrace for Line2D {
@@ -31,7 +31,7 @@ impl PathTrace for Line2D {
             graphics_2d._set_pixel(
                 (x1 + delta_x * i) as usize,
                 (y1 + delta_y * i) as usize,
-                self.color,
+                &self.color,
                 base
             );
             if i >= sample_points {

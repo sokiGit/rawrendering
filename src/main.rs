@@ -7,9 +7,7 @@ use winit::application::ApplicationHandler;
 use winit::event::WindowEvent;
 use winit::event_loop::{ActiveEventLoop, ControlFlow, EventLoop};
 use winit::window::{Window, WindowId};
-use winit::window::CursorIcon::Default;
 use crate::canvas::Canvas;
-use crate::canvas::polygon::Polygon;
 use crate::graphics_2d::Graphics2D;
 use crate::object_2d::Object2D;
 use crate::shape_2d::circle::Circle;
@@ -104,8 +102,8 @@ impl ApplicationHandler for App {
                         width: width as usize,
                         height: height as usize,
                     };
-
-                    canvas.clear(0x000000);
+                    
+                    canvas.clear(0x00000000);
 
                     let mut graphics = Graphics2D {
                         canvas: &mut canvas,
@@ -118,8 +116,8 @@ impl ApplicationHandler for App {
                         },
                         width: 32,
                         height: 32,
-                        fill_color: 0x00FF00FF,
-                        outline_color: 0xFF000000,
+                        fill_color: 0x00FF00FF.into(),
+                        outline_color: 0xFF000000.into(),
                     });
 
                     graphics.draw_shape(&Rect {
@@ -129,8 +127,8 @@ impl ApplicationHandler for App {
                         },
                         width: 64,
                         height: 32,
-                        fill_color: 0x00664499,
-                        outline_color: 0xFF000000,
+                        fill_color: 0x00664499.into(),
+                        outline_color: 0xFF000000.into(),
                     });
 
                     graphics.draw_shape(&Rect {
@@ -140,8 +138,8 @@ impl ApplicationHandler for App {
                         },
                         width: 64,
                         height: 64,
-                        fill_color: 0xFF000000,
-                        outline_color: 0x00AA55FF,
+                        fill_color: 0xFF000000.into(),
+                        outline_color: 0x00AA55FF.into(),
                     });
 
                     graphics.draw_shape(&Rect {
@@ -151,8 +149,8 @@ impl ApplicationHandler for App {
                         },
                         width: 200,
                         height: 0,
-                        fill_color: 0xFF000000,
-                        outline_color: 0x00FFAAAA,
+                        fill_color: 0xFF000000.into(),
+                        outline_color: 0x00FFAAAA.into(),
                     });
 
                     graphics.draw_shape(&Rect {
@@ -162,8 +160,8 @@ impl ApplicationHandler for App {
                         },
                         width: 200,
                         height: 1,
-                        fill_color: 0xFF000000,
-                        outline_color: 0x00AAFFAA,
+                        fill_color: 0xFF000000.into(),
+                        outline_color: 0x00AAFFAA.into(),
                     });
 
                     graphics.draw_shape(&Rect {
@@ -173,8 +171,8 @@ impl ApplicationHandler for App {
                         },
                         width: 200,
                         height: 2,
-                        fill_color: 0xFF000000,
-                        outline_color: 0x00AAAAFF,
+                        fill_color: 0xFF000000.into(),
+                        outline_color: 0x00AAAAFF.into(),
                     });
 
                     graphics.draw_shape(&Rect {
@@ -184,8 +182,8 @@ impl ApplicationHandler for App {
                         },
                         width: 64,
                         height: 64,
-                        fill_color: 0x00FF0000,
-                        outline_color: 0xFF000000,
+                        fill_color: 0x00FF0000.into(),
+                        outline_color: 0xFF000000.into(),
                     });
 
                     graphics.draw_shape(&Rect {
@@ -195,8 +193,8 @@ impl ApplicationHandler for App {
                         },
                         width: 64,
                         height: 64,
-                        fill_color: 0x8800FF00,
-                        outline_color: 0xFF000000,
+                        fill_color: 0x8800FF00.into(),
+                        outline_color: 0xFF000000.into(),
                     });
 
                     graphics.draw_shape(&VectorPath2D {
@@ -208,7 +206,7 @@ impl ApplicationHandler for App {
                             Box::new(Line2D {
                                 from: Vec2::new(0, 0),
                                 to: Vec2::new(30, 60),
-                                color: 0x00FFFFFF,
+                                color: 0x00FFFFFF.into(),
                             }),
                         ],
                     });
@@ -219,7 +217,7 @@ impl ApplicationHandler for App {
                             Box::new(Line2D {
                                 from: Vec2::new(0, height as isize),
                                 to: Vec2::new(width as isize, 0),
-                                color: 0x00AAAAAA,
+                                color: 0x00AAAAAAu32.into(),
                             }),
                         ],
                     });
@@ -314,8 +312,8 @@ impl ApplicationHandler for App {
                             ..Object2D::default()
                         },
                         radius: 32,
-                        fill_color: 0x00AA5533,
-                        outline_color: 0xFF000000,
+                        fill_color: 0x00AA5533.into(),
+                        outline_color: 0xFF000000.into(),
                     });
 
                     graphics.draw_shape(&Circle {
@@ -325,8 +323,8 @@ impl ApplicationHandler for App {
                             ..Object2D::default()
                         },
                         radius: 32 * 16,
-                        fill_color: 0xFF000000,
-                        outline_color: 0x0044FFFF,
+                        fill_color: 0xFF000000.into(),
+                        outline_color: 0x0044FFFF.into(),
                     });
 
                     /*
@@ -352,8 +350,8 @@ impl ApplicationHandler for App {
                             },
                             height: 64,
                             width: 64,
-                            fill_color: 0x0000FF00,
-                            outline_color: 0x00FF00FF,
+                            fill_color: 0x0000FF00.into(),
+                            outline_color: 0x00FF00FF.into(),
                             ..Rect::default()
                         }
                     );
@@ -367,8 +365,8 @@ impl ApplicationHandler for App {
                             },
                             width: 32,
                             height: 32,
-                            fill_color: 0x00AA2266,
-                            outline_color: 0xFF000000,
+                            fill_color: 0x00AA2266.into(),
+                            outline_color: 0xFF000000.into(),
                         }
                     );
 
@@ -379,8 +377,8 @@ impl ApplicationHandler for App {
                                 ..Object2D::default()
                             },
                             radius: 20,
-                            fill_color: 0x00FF0000,
-                            outline_color: 0x00FFFFFF,
+                            fill_color: 0x00FF0000.into(),
+                            outline_color: 0x00FFFFFF.into(),
                             ..Circle::default()
                         }
                     );
@@ -392,14 +390,14 @@ impl ApplicationHandler for App {
                                 Box::new(Line2D {
                                     from: Vec2::new(0, 0),
                                     to: Vec2::new(50, 0),
-                                    color: 0x0000FFFF,
+                                    color: 0x0000FFFF.into(),
                                 }),
                                 Box::new(CubicBezierCurve2D {
                                     from: Vec2::new(50, 0),
                                     to: Vec2::new(100, 50),
                                     from_control_point: Vec2::new(100, 0),
                                     to_control_point: Vec2::new(100, 0),
-                                    color: 0x0000FFFF,
+                                    color: 0x0000FFFF.into(),
                                 }),
                             ],
                         }
@@ -417,28 +415,28 @@ impl ApplicationHandler for App {
                                     to: Vec2::new(200, 50),
                                     from_control_point: Vec2::new(110, -15),
                                     to_control_point: Vec2::new(200, -15),
-                                    color: 0x00FF0000,
+                                    color: 0x00FF0000.into(),
                                 }),
                                 Box::new(CubicBezierCurve2D {
                                     from: Vec2::new(200, 50),
                                     to: Vec2::new(100, 175),
                                     from_control_point: Vec2::new(200, 100),
                                     to_control_point: Vec2::new(150, 150),
-                                    color: 0x00FF0000,
+                                    color: 0x00FF0000.into(),
                                 }),
                                 Box::new(CubicBezierCurve2D {
                                     from: Vec2::new(100, 175),
                                     to: Vec2::new(0, 50),
                                     from_control_point: Vec2::new(50, 150),
                                     to_control_point: Vec2::new(0, 100),
-                                    color: 0x00FF0000,
+                                    color: 0x00FF0000.into(),
                                 }),
                                 Box::new(CubicBezierCurve2D {
                                     from: Vec2::new(0, 50),
                                     to: Vec2::new(100, 50),
                                     from_control_point: Vec2::new(0, -15),
                                     to_control_point: Vec2::new(90, -15),
-                                    color: 0x00FF0000,
+                                    color: 0x00FF0000.into(),
                                 })
                             ]
                         }
@@ -452,8 +450,8 @@ impl ApplicationHandler for App {
                         },
                         width: (width.max(16) - 16) as usize,
                         height: 24,
-                        outline_color: 0x0099DDFF,
-                        fill_color: 0x7799DDFF,
+                        outline_color: 0x0099DDFF.into(),
+                        fill_color: 0x7799DDFF.into(),
                     });
 
                     graphics.draw_shape(&Rect {
@@ -465,8 +463,8 @@ impl ApplicationHandler for App {
                         },
                         width: 32,
                         height: 32,
-                        fill_color: 0x000000FF,
-                        outline_color: 0x0000FF00,
+                        fill_color: 0x000000FF.into(),
+                        outline_color: 0x0000FF00.into(),
                     });
 
                     graphics.draw_shape(&Circle {
@@ -476,22 +474,22 @@ impl ApplicationHandler for App {
                             ..Object2D::default()
                         },
                         radius: 16,
-                        fill_color: 0x000000FF,
-                        outline_color: 0xCCFFFFFF,
+                        fill_color: 0x000000FF.into(),
+                        outline_color: 0xCCFFFFFF.into(),
                     });
 
                     graphics.draw_shape(&Circle {
                         base: Object2D::default(),
                         radius: 0xFF,
-                        fill_color: 0xFF000000,
-                        outline_color: 0xCCFF00FF,
+                        fill_color: 0xFF000000.into(),
+                        outline_color: 0xCCFF00FF.into(),
                     });
 
                     graphics.draw_shape(&Circle {
                         base: Object2D::default(),
                         radius: 0xFA,
-                        fill_color: 0xFF000000,
-                        outline_color: 0x00FF00FF,
+                        fill_color: 0xFF000000.into(),
+                        outline_color: 0x00FF00FF.into(),
                     });
 
                     graphics.draw_shape(&Rect {
@@ -501,8 +499,8 @@ impl ApplicationHandler for App {
                         },
                         height: 32,
                         width: 16,
-                        fill_color: 0xCCFF00FF,
-                        outline_color: 0xFFFF00FF,
+                        fill_color: 0xCCFF00FF.into(),
+                        outline_color: 0xFFFF00FF.into(),
                     });
 
                     // Render buffer to screen
