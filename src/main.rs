@@ -474,7 +474,7 @@ impl ApplicationHandler for App {
                             ..Object2D::default()
                         },
                         radius: 16,
-                        fill_color: 0x000000FF.into(),
+                        fill_color: 0xCC0000FF.into(),
                         outline_color: 0xCCFFFFFF.into(),
                     });
 

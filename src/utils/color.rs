@@ -20,6 +20,12 @@ impl Color {
     
     pub(crate) fn mix_overlapping_destroy_transparency(&self, overlapping: &Color) -> Color {
         let fg_a = overlapping.value >> 24 & 0xFF;
+        let bg_a = self.value >> 24 & 0xFF;
+        let fg_a_standard = 1f32 - (fg_a as f32 / 255f32);
+        let bg_a_standard = 1f32 - (bg_a as f32 / 255f32);
+        let fin_a = ((1f32 - (fg_a_standard + bg_a_standard * (1f32 - fg_a_standard))) * 255f32) as u32 & 0xFF; 
+
+        println!("fg: {:x}, bg: {:x}, fin: {:x}", fg_a, bg_a, fin_a );
         
         let alpha = fg_a as f32 / 255f32; // 0xFF00000000 -> 0x000000FF (6 hex sh = 24 bin sh), mask isn't strictly necessary for u32
 
@@ -37,7 +43,7 @@ impl Color {
         let fin_g = ((bg_g as f32 * alpha) + (fg_g as f32 * (1f32 - alpha))) as u32 & 0xFF;
         let fin_b = ((bg_b as f32 * alpha) + (fg_b as f32 * (1f32 - alpha))) as u32 & 0xFF;
 
-        let fin_color = fin_r << 16 | fin_g << 8 | fin_b;
+        let fin_color = fin_a << 24 | fin_r << 16 | fin_g << 8 | fin_b;
         
         // Return resulting color
         Color::new(fin_color)

@@ -87,7 +87,7 @@ impl Shape2D for Circle {
         // Draw outline (if present)
         if !outline_points.is_empty() {
             for point in outline_points {
-                graphics_2d._set_pixel(point.x, point.y, &self.outline_color, &self.base);
+                graphics_2d._set_pixel(point.x, point.y, &self.fill_color.mix_overlapping_destroy_transparency(&self.outline_color), &self.base);
             }
         }
     }
