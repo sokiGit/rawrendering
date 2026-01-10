@@ -1,10 +1,12 @@
 use crate::utils::vec2::Vec2;
-pub(crate) struct Object2D {
-    pub(crate) offset: Vec2<isize>,
-    pub(crate) relative_offset: Vec2<f32>,
-    pub(crate) anchor: Vec2<isize>,
-    //TODO: pub(crate) relative_anchor: Vec2<f32>, (Will most likely require something like get_bounds_size() -> Vec2<usize>)
-    //TODO: pub(crate) scale: f32
+
+#[derive(Clone)]
+pub struct Object2D {
+    pub offset: Vec2<i32>,
+    pub relative_offset: Vec2<f32>,
+    pub anchor: Vec2<i32>,
+    //TODO: pub relative_anchor: Vec2<f32>, (Will most likely require something like get_bounds_size() -> Vec2<usize>)
+    //TODO: pub scale: f32
 }
 
 impl Default for Object2D {

@@ -1,19 +1,18 @@
 use crate::graphics_2d::Graphics2D;
 use crate::object_2d::Object2D;
-use crate::shape_2d::path_trace::PathTrace;
 use crate::utils::color::Color;
 use crate::utils::vec2::Vec2;
 
-pub(crate) struct CubicBezierCurve2D {
-    pub(crate) from: Vec2<isize>,
-    pub(crate) to: Vec2<isize>,
-    pub(crate) from_control_point: Vec2<isize>,
-    pub(crate) to_control_point: Vec2<isize>,
-    pub(crate) color: Color,
+pub struct CubicBezierCurve2D {
+    pub from: Vec2<i32>,
+    pub to: Vec2<i32>,
+    pub from_control_point: Vec2<i32>,
+    pub to_control_point: Vec2<i32>,
+    pub color: Color,
 }
 
-impl PathTrace for CubicBezierCurve2D{
-    fn draw(&self, base: &Object2D, graphics_2d: &mut Graphics2D) {
+impl CubicBezierCurve2D{
+    pub(crate) fn draw_raw(&self, base: &Object2D, graphics_2d: &mut Graphics2D) {
         //TODO: This is also legacy code in need of a re-make
 
         // x1, y1 = Start of curve
@@ -70,8 +69,8 @@ impl PathTrace for CubicBezierCurve2D{
             let b_2_x = bridge_x + (inter_2_x - bridge_x) * i / sample_points;
             let b_2_y = bridge_y + (inter_2_y - bridge_y) * i / sample_points;
 
-            let x_px = (b_1_x + (b_2_x - b_1_x) * i / sample_points) as usize;
-            let y_px = (b_1_y + (b_2_y - b_1_y) * i / sample_points) as usize;
+            let x_px = (b_1_x + (b_2_x - b_1_x) * i / sample_points) as u32;
+            let y_px = (b_1_y + (b_2_y - b_1_y) * i / sample_points) as u32;
 
             graphics_2d._set_pixel(x_px, y_px, &self.color, base);
 

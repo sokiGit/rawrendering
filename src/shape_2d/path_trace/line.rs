@@ -1,17 +1,15 @@
 use crate::graphics_2d::Graphics2D;
 use crate::object_2d::Object2D;
-use crate::shape_2d::path_trace::PathTrace;
 use crate::utils::color::Color;
 use crate::utils::vec2::Vec2;
-
-pub(crate) struct Line2D {
-    pub(crate) from: Vec2<isize>,
-    pub(crate) to: Vec2<isize>,
-    pub(crate) color: Color,
+pub struct Line2D {
+    pub from: Vec2<i32>,
+    pub to: Vec2<i32>,
+    pub color: Color,
 }
 
-impl PathTrace for Line2D {
-    fn draw(&self, base: &Object2D, graphics_2d: &mut Graphics2D) {
+impl Line2D {
+    pub(crate) fn draw_raw(&self, base: &Object2D, graphics_2d: &mut Graphics2D) {
         //TODO: Needs heavy optimisation, this is legacy code with minimal modification
         let x1 = self.from.x as f32;
         let y1 = self.from.y as f32;
@@ -29,8 +27,8 @@ impl PathTrace for Line2D {
         let mut i = 0f32;
         loop {  
             graphics_2d._set_pixel(
-                (x1 + delta_x * i) as usize,
-                (y1 + delta_y * i) as usize,
+                (x1 + delta_x * i) as u32,
+                (y1 + delta_y * i) as u32,
                 &self.color,
                 base
             );

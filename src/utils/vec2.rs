@@ -1,8 +1,9 @@
 #[derive(Default)]
 #[derive(Eq, Hash, PartialEq)]
-pub(crate) struct Vec2<T> {
-    pub(crate) x: T,
-    pub(crate) y: T,
+#[derive(Clone)]
+pub struct Vec2<T> {
+    pub x: T,
+    pub y: T,
 }
 
 impl<T> Vec2<T> {

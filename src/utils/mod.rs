@@ -1,2 +1,2 @@
-pub(crate) mod vec2;
-pub(crate) mod color;
+pub mod vec2;
+pub mod color;

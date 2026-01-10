@@ -1,19 +1,19 @@
 use crate::graphics_2d::Graphics2D;
 use crate::object_2d::Object2D;
-use crate::shape_2d::Shape2D;
+use crate::shape_2d::Drawable;
 use crate::utils::color::Color;
 
 #[derive(Default)]
-pub(crate) struct Rect {
-    pub(crate) base: Object2D,
-    pub(crate) width: usize,
-    pub(crate) height: usize,
-    pub(crate) fill_color: Color,
-    pub(crate) outline_color: Color,
-    //TODO: pub(crate) outline_thickness: usize,
+pub struct Rect {
+    pub base: Object2D,
+    pub width: u32,
+    pub height: u32,
+    pub fill_color: Color,
+    pub outline_color: Color,
+    //TODO: pub(crate) outline_thickness: u32,
 }
 
-impl Shape2D for Rect {
+impl Drawable for Rect {
     fn draw(&self, graphics_2d: &mut Graphics2D) {
         // No zero-width or zero-height rects
         if self.width == 0 || self.height == 0 { return; }
@@ -43,14 +43,12 @@ impl Shape2D for Rect {
 
             // top and bottom
             for x in 0..self.width {
-                println!("Vertical rect border fill");
                 graphics_2d._set_pixel(x, 0, &self.outline_color, &self.base);
                 graphics_2d._set_pixel(x, height, &self.outline_color, &self.base);
             }
             
             // left and right
             for y in 1..self.height - 1 {
-                println!("Horizontal rect border fill");
                 graphics_2d._set_pixel(0, y, &self.outline_color, &self.base);
                 graphics_2d._set_pixel(width, y, &self.outline_color, &self.base);
             }

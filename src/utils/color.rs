@@ -1,5 +1,5 @@
-pub(crate) struct Color {
-    pub(crate) value: u32,
+pub struct Color {
+    pub value: u32,
 }
 
 impl Default for Color {
@@ -9,8 +9,8 @@ impl Default for Color {
 }
 
 impl Color {
-    pub(crate) fn new(value_argb: u32) -> Self { Color { value: value_argb } }
-    fn from_rgba(value_rgba: u32) -> Self {
+    pub fn new(value_argb: u32) -> Self { Color { value: value_argb } }
+    pub fn from_rgba(value_rgba: u32) -> Self {
         Color {
             value: value_rgba >> 24 & 0xFF | value_rgba << 8 & 0xFFFFFF00
         }

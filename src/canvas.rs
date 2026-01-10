@@ -6,29 +6,29 @@ use crate::utils::color::Color;
 
 pub struct Canvas<'a> {
     pub pixels: &'a mut [u32],
-    pub width: usize,
-    pub height: usize,
+    pub width: u32,
+    pub height: u32,
 }
 
 impl<'a> Canvas<'a> {
-    pub fn set_pixel(&mut self, x: usize, y: usize, color: &Color) {
+    pub fn set_pixel(&mut self, x: u32, y: u32, color: &Color) {
         if x < self.width && y < self.height {
             let alpha = (color.value >> 24 & 0xFF) as f32 / 255f32; // 0xFF00000000 -> 0x000000FF (6 hex sh = 24 bin sh), mask isn't strictly necessary for u32
 
             if alpha == 1f32 { return; } // Transparent, don't draw
             else if alpha == 0f32 {
                 // Opaque, don't calculate color mixing since it's just the new color anyway
-                self.pixels[y * self.width + x] = color.value;
+                self.pixels[(y * self.width + x) as usize] = color.value;
             } else {
                 // Color is semi-transparent, color mixing needs to be calculated
-                self.pixels[y * self.width + x] = Color::from(self.get_pixel(x, y)).mix_overlapping_destroy_transparency(color).value; // ... this .. seems to kinda suck...
+                self.pixels[(y * self.width + x) as usize] = Color::from(self.get_pixel(x, y)).mix_overlapping_destroy_transparency(color).value; // ... this .. seems to kinda suck...
             }
         }
     }
 
-    pub fn get_pixel(&self, x: usize, y: usize) -> u32 {
+    pub fn get_pixel(&self, x: u32, y: u32) -> u32 {
         if x < self.width && y < self.height {
-            self.pixels[y * self.width + x]
+            self.pixels[(y * self.width + x) as usize]
         } else {
             0x00000000
         }
