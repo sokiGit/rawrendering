@@ -59,6 +59,6 @@ I'll check these things as they get done :3
   architecture)
 - [ ] 3D object rendering (very basic, no gpu acceleration)
 - [x] Re-structure modules - everything does one thing
-- [ ] Fix color transparent mixing, make it work blend regardless of method used
+- [x] Fix color transparent mixing, make it work blend regardless of method used
 - [ ] Gradient object fills and outlines
 - [ ] Maybe grouping objects together? To control transparency of all of them at once? :3 
